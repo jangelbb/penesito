@@ -5,47 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FitSyle - Inicio</title>
     
-    <!-- Enlace al Manifiesto PWA -->
     <link rel="manifest" href="manifest.webmanifest">
-    <!-- Color del navegador móvil -->
     <meta name="theme-color" content="#014421">
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
-    <!-- Importando Poppins y Oswald -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <!-- Alertas -->
     <div id="alert-container" class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 2050; width: 90%; max-width: 400px;"></div>
 
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-main sticky-top">
         <div class="container-fluid d-flex justify-content-between align-items-center position-relative">
-            <!-- 1. Logo con enlace a index.html -->
             <a class="navbar-brand d-flex align-items-center order-1" href="index.html">
                 <img src="Img/logo.png" alt="FitSyle" onerror="this.src='lojo.png'">
                 <span class="navbar-brand-text ms-2 d-none d-sm-inline">FitSyle</span>
             </a>
             
-            <!-- 2. Barra de Búsqueda con X -->
             <div class="search-container order-2">
                 <div class="search-input-wrapper">
                     <i class="bi bi-search search-icon"></i>
                     <input type="text" id="searchInput" class="search-input" placeholder="Buscar productos">
-                    <!-- X MÁS OSCURA -->
                     <i class="bi bi-x search-clear-icon d-none" id="clearSearchBtn"></i>
                 </div>
             </div>
 
-            <!-- 3. Toggler -->
             <button class="navbar-toggler order-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
                 <i class="bi bi-list text-white"></i>
             </button>
 
-            <!-- 4. Contenido Colapsable -->
             <div class="collapse navbar-collapse order-4 order-lg-3" id="navbarContent">
                 <div class="d-flex align-items-center ms-auto">
                     <a class="btn btn-icon fs-4 me-3 text-white" href="#" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
@@ -60,7 +50,6 @@
         </div>
     </nav>
 
-    <!-- Banner con Flechas -->
     <section class="carousel-icon-wrapper">
         <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
@@ -82,7 +71,6 @@
             </button>
         </div>
 
-        <!-- Cápsula de Beneficios -->
         <div class="features-overlay">
             <div class="rounded-pill-custom">
                 <div class="row g-2 justify-content-center"> 
@@ -107,7 +95,6 @@
         </div>
     </section>
 
-    <!-- Filtros Estilo Píldora -->
     <div class="container category-filter-bar">
         <button class="filter-pill active" data-filter="all">Ver Todo</button>
         <button class="filter-pill" data-filter="mujer">Mujer</button>
@@ -116,7 +103,6 @@
         <button class="filter-pill" data-filter="segunda">Segunda Oportunidad</button>
     </div>
 
-    <!-- Grid Productos -->
     <div class="container mb-5">
         <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2 g-md-4" id="productsContainer">
             <div class="col-12 text-center py-5">
@@ -126,7 +112,6 @@
         </div>
     </div>
 
-    <!-- Carrito Offcanvas -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas">
         <div class="offcanvas-header border-bottom">
             <h5 class="offcanvas-title fw-bold text-success">Tu Carrito</h5>
@@ -153,7 +138,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="footer-main text-center">
         <div class="container">
             <h4 class="mb-3 font-oswald">FITSYLE</h4>
@@ -162,7 +146,6 @@
         </div>
     </footer>
 
-    <!-- Botón y Modal Chatbot -->
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1030;">
         <button id="aiChatToggleBtn" class="btn btn-ai-assistant rounded-circle shadow-lg" type="button" data-bs-toggle="modal" data-bs-target="#aiChatModal">
             <i class="bi bi-robot fs-3"></i>
@@ -186,7 +169,6 @@
         </div>
     </div>
 
-    <!-- Modal Login -->
     <div class="modal fade modal-login-custom" id="loginModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -224,14 +206,15 @@
         // IMPORTANTE: enableIndexedDbPersistence es para que funcione sin internet
         import { getFirestore, collection, onSnapshot, query, orderBy, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+        // --- AQUI ESTÁ EL CAMBIO IMPORTANTE: DATOS DEL NUEVO PROYECTO "FITSYLE" ---
         const firebaseConfig = {
-            apiKey: "AIzaSyB_LcA4zZk6gZcAPH38HDMxXVqlelgGLQ8",
-            authDomain: "proyecto1-b6570.firebaseapp.com",
-            projectId: "proyecto1-b6570",
-            storageBucket: "proyecto1-b6570.firebasestorage.app",
-            messagingSenderId: "575435247117",
-            appId: "1:575435247117:web:88bfac2a385f43158a4f44",
-            measurementId: "G-R4L645TLDL"
+            apiKey: "AIzaSyAuyh4pHllhtZLbgFgfZF4tlJrncFy4R7g",
+            authDomain: "fitsyle.firebaseapp.com",
+            projectId: "fitsyle",
+            storageBucket: "fitsyle.firebasestorage.app",
+            messagingSenderId: "595367121052",
+            appId: "1:595367121052:web:c19aac0ed1986dfb389d59",
+            measurementId: "G-J46KZD01W3"
         };
 
         const app = initializeApp(firebaseConfig);
