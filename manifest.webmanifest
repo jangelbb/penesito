@@ -1,0 +1,23 @@
+{
+  "name": "FitSyle Tienda",
+  "short_name": "FitSyle",
+  "description": "Tu tienda de moda deportiva favorita",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F5F5F5",
+  "theme_color": "#014421",
+  "orientation": "portrait",
+  "scope": "./",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

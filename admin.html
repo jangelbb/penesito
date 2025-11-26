@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#014421">
+  <title>Admin - FitSyle</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <style>
+    /* === VARIABLES DE DISEÑO === */
+    :root {
+        --color-barra: #014421;       
+        --color-fondo: #F5F5F5;       
+        --color-botones-gris: #C0C0C0; 
+        --color-texto-blanco: #ffffff; 
+        --color-texto-oscuro: #333333;
+        --color-acento-claro: #E0E0E0;
+    }
+
+    body { 
+        background-color: var(--color-fondo);
+        font-family: 'Poppins', sans-serif !important;
+        color: var(--color-texto-oscuro);
+        padding-top: 0;
+    }
+    
+    .content-padding {
+        padding-top: 90px; 
+    }
+    
+    h1, h2, h3, h4, h5, h6, .btn, .form-control, .form-select, label {
+        font-family: 'Poppins', sans-serif !important;
+    }
+
+    /* === NAVBAR === */
+    .navbar-custom {
+        background-color: var(--color-barra) !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important; 
+        border: none !important; 
+        padding: 0.5rem 0; 
+        transition: padding 0.3s ease;
+        z-index: 1050; 
+    }
+    
+    .navbar-custom .navbar-brand {
+        font-size: 1.6rem; 
+        font-weight: 800; 
+        letter-spacing: 0.5px;
+        color: var(--color-texto-blanco) !important;
+        font-family: 'Poppins', sans-serif; 
+        line-height: 1;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+    
+    .navbar-logo {
+        height: 45px; 
+        width: 45px;  
+        margin-right: 10px; 
+        border-radius: 50%; 
+        object-fit: contain; 
+        background-color: transparent; 
+    }
+
+    /* HAMBURGUESA */
+    .navbar-toggler {
+        border: none;
+        padding: 0.25rem;
+    }
+    .navbar-toggler:focus {
+        box-shadow: none;
+    }
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    /* --- BOTONES NAV --- */
+    .btn-nav {
+        background-color: var(--color-botones-gris);
+        color: var(--color-texto-oscuro);
+        border: none !important; 
+        
+        border-radius: 50px; 
+        padding: 0.5rem 1.2rem; 
+        min-width: 120px; 
+        width: auto;      
+        
+        font-weight: 600;
+        font-size: 0.95rem;     
+        
+        transition: all 0.3s ease; 
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px; 
+    }
+
+    .btn-nav i {
+        font-size: 1.2rem; 
+    }
+
+    .btn-nav:hover {
+        background-color: #e0e0e0 !important; 
+        color: #000 !important; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        transform: translateY(-1px);
+    }
+
+    /* TARJETAS */
+    .card {
+        border-radius: 16px;
+        border: none;
+        box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow: hidden;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 16px 30px rgba(0,0,0,0.15);
+        border: 1px solid var(--color-barra);
+    }
+    
+    .thumb-grid { 
+        display: grid; 
+        grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); 
+        gap: 0.5rem; 
+        margin-bottom: 1rem;
+    }
+    .thumb { 
+        object-fit: cover; 
+        height: 80px; 
+        width: 100%;
+        border-radius: 8px; 
+    }
+
+    /* MODAL */
+    .modal-content { border-radius: 20px; border: none; }
+    .modal-header { background-color: var(--color-barra); color: white; border-radius: 20px 20px 0 0; }
+    .btn-close { filter: invert(1); } 
+    
+    .form-label { font-weight: 600; font-size: 0.9rem; color: #444; margin-bottom: 0.3rem; }
+    .form-control, .form-select { border-radius: 10px; padding: 0.6rem; }
+    .form-control:focus, .form-select:focus { border-color: var(--color-barra); box-shadow: 0 0 0 0.25rem rgba(1, 68, 33, 0.15); }
+
+    /* ESTILO BOTÓN CHECKBOX 2DA OPORTUNIDAD */
+    .btn-check-custom:checked + .btn-outline-custom {
+        background-color: var(--color-barra);
+        color: white;
+        border-color: var(--color-barra);
+    }
+    .btn-outline-custom {
+        border: 2px solid #e0e0e0;
+        color: #666;
+        background-color: white;
+        transition: all 0.3s ease;
+    }
+    .btn-outline-custom:hover {
+        border-color: var(--color-barra);
+        color: var(--color-barra);
+    }
+
+    .badge-marca { background-color: var(--color-texto-oscuro); color: white; font-weight: 500; }
+    .badge-genero { background-color: var(--color-botones-gris); color: var(--color-texto-oscuro); font-weight: 600; }
+    .badge-talla { border: 1px solid var(--color-barra); color: var(--color-barra); background: transparent; font-weight: 600; }
+    .badge-segunda { background-color: #c0c0c0; color: #333; font-weight: 700; border: none; }
+  </style>
+</head>
+<body class="pb-5">
+
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+  <div class="container">
+    
+    <a class="navbar-brand" href="index.html">
+        <img src="lojo.png" alt="Logo" class="navbar-logo">
+        <span>Admin</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="d-flex flex-column flex-lg-row gap-3 mt-3 mt-lg-0 align-items-start align-items-lg-center justify-content-end w-100">
+            <a href="tienda.html" class="btn btn-nav">
+                <i class="bi bi-bag-fill"></i> Tienda
+            </a>
+            <button class="btn btn-nav" data-bs-toggle="modal" data-bs-target="#productoModal">
+                <i class="bi bi-plus-circle-fill"></i> Nuevo
+            </button>
+        </div>
+    </div>
+
+  </div>
+</nav>
+
+<div class="content-padding">
+    <main class="container mt-4">
+      <div id="productsContainer" class="row"></div>
+    </main>
+</div>
+
+<div class="modal fade" id="productoModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content shadow-lg">
+      <div class="modal-header">
+        <h5 class="modal-title" style="font-weight: 700;"><i class="bi bi-tag-fill me-2"></i> Nuevo producto</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <form id="productoForm">
+        <div class="modal-body p-4">
+          
+          <h6 class="text-muted text-uppercase fw-bold mb-3 small border-bottom pb-2">Datos generales FitSyle</h6>
+          <div class="row g-3 mb-4">
+            <div class="col-12">
+              <label class="form-label">Nombre del producto:</label>
+              <input id="nombreProducto" class="form-control" placeholder="Ej. Nike Air Max 90" required />
+            </div>
+            
+            <div class="col-md-6">
+              <label class="form-label">Precio(MXN):</label>
+              <div class="input-group">
+                  <span class="input-group-text bg-light">$</span>
+                  <input type="number" step="0.01" min="0" id="precioProducto" class="form-control" placeholder="0.00" required oninput="validity.valid||(value='');" />
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Stock disponible:</label>
+              <input type="number" id="stock" class="form-control" value="1" min="0" required oninput="validity.valid||(value='');" />
+            </div>
+
+            <div class="col-12 mt-2">
+                <input type="checkbox" class="btn-check btn-check-custom" id="esSegundaOportunidad" autocomplete="off">
+                <label class="btn btn-outline-custom w-100 p-2 rounded-pill fw-bold d-flex align-items-center justify-content-center" for="esSegundaOportunidad">
+                    <i class="bi bi-recycle me-2 fs-5"></i> 
+                    Segunda Oportunidad
+                </label>
+            </div>
+
+          </div>
+
+          <h6 class="text-muted text-uppercase fw-bold mb-3 small border-bottom pb-2">Clasificación</h6>
+          <div class="row g-3 mb-4">
+            
+            <div class="col-md-6">
+                <label class="form-label">Marca:</label>
+                <select id="marcaSelect" class="form-select" required>
+                    <option value="" selected disabled>Seleccionar...</option>
+                    <option value="NIKE">Nike</option>
+                    <option value="ADIDAS">Adidas</option>
+                    <option value="ALO">Alo</option>
+                    <option value="NEW BALANCE">New Balance</option>
+                    <option value="ON">ON</option>
+                    <option value="SALOMON">Salomon</option>
+                    <option value="OTRO">Otro(Escribir)</option>
+                </select>
+                <input type="text" id="marcaManual" class="form-control mt-2 d-none" placeholder="Escribe la marca aquí...">
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Género:</label>
+                <select id="genero" class="form-select" required>
+                    <option value="" selected disabled>Seleccionar...</option>
+                    <option value="HOMBRE">Hombre</option>
+                    <option value="MUJER">Mujer</option>
+                    <option value="UNISEX">Unisex</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Tipo de producto:</label>
+                <select id="tipoProducto" class="form-select" required>
+                    <option value="" selected disabled>Seleccionar...</option>
+                    <option value="Calzado">Calzado</option>
+                    <option value="Playeras">Playeras</option>
+                    <option value="Tops">Tops</option>
+                    <option value="Shorts">Shorts</option>
+                    <option value="Sudaderas">Sudaderas</option>
+                    <option value="Hoodies">Hoodies</option>
+                    <option value="Faldas">Falda</option>
+                    <option value="Joggers">Joggers</option>
+                    <option value="Leggins">Leggins</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Talla:</label>
+                
+                <div id="divTallaRopa" class="d-none">
+                    <select id="tallaRopa" class="form-select">
+                        <option value="" selected disabled>Selcciona talla de ropa</option>
+                        <option value="XS">XS</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
+                    </select>
+                </div>
+
+                <div id="divTallaCalzado" class="d-none">
+                    <select id="tallaCalzado" class="form-select">
+                        <option value="" selected disabled>Selecciona talla de calzado:</option>
+                        <option value="22">22</option>
+                        <option value="23">23</option>
+                        <option value="24">24</option>
+                        <option value="25">25</option>
+                        <option value="26">26</option>
+                        <option value="27">27</option>
+                        <option value="28">28</option>
+                        <option value="29">29</option>
+                        <option value="30">30</option>
+                        <option value="31">31</option>
+                        <option value="32">32</option>
+                    </select>
+                </div>
+                
+                <div id="mensajeSinTipo" class="text-muted small mt-2">
+                    <i class="bi bi-arrow-up"></i> Selecciona primero el tipo:
+                </div>
+            </div>
+          </div>
+
+          <h6 class="text-muted text-uppercase fw-bold mb-3 small border-bottom pb-2">Detalles</h6>
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Descripción:</label>
+              <textarea id="descripcion" class="form-control" rows="3" placeholder="Escribe los detalles..." required></textarea>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label">Imágenes</label>
+              <input type="file" id="imagenesProducto" class="form-control" accept="image/*" multiple />
+              <div id="previewImagenes" class="thumb-grid p-2 bg-light rounded-3 border mt-2"></div>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer bg-light" style="border-radius: 0 0 20px 20px;">
+          <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
+          <button class="btn btn-nav px-4" type="submit" id="submitBtn">
+            <span class="spinner-border spinner-border-sm d-none" id="submitSpinner"></span>
+            <i class="bi bi-save me-1"></i> Guardar producto
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script type="module">
+  // Configuración Firebase
+    const firebaseConfig = {
+    apiKey: "AIzaSyB_LcA4zZk6gZcAPH38HDMxXVqlelgGLQ8",
+    authDomain: "proyecto1-b6570.firebaseapp.com",
+    projectId: "proyecto1-b6570",
+    storageBucket: "proyecto1-b6570.firebasestorage.app",
+    messagingSenderId: "575435247117",
+    appId: "1:575435247117:web:88bfac2a385f43158a4f44",
+    measurementId: "G-R4L645TLDL"
+    };
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { 
+    getFirestore, collection, addDoc, serverTimestamp,
+    onSnapshot, query, orderBy, deleteDoc, doc, enableIndexedDbPersistence
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  enableIndexedDbPersistence(db).catch(err => console.log("Persistencia:", err.code));
+
+  // Cloudinary
+  const cloudName = "dwvwltsgc";      
+  const uploadPreset = "pwa_unsigned";
+
+  const modal = new bootstrap.Modal(document.getElementById('productoModal'));
+  const form = document.getElementById('productoForm');
+  const container = document.getElementById('productsContainer');
+  const imagenesInput = document.getElementById('imagenesProducto');
+  const previewDiv = document.getElementById('previewImagenes');
+
+  // === VARIABLES DOM ===
+  const marcaSelect = document.getElementById('marcaSelect');
+  const marcaManual = document.getElementById('marcaManual');
+  const tipoProductoSelect = document.getElementById('tipoProducto');
+  const divTallaRopa = document.getElementById('divTallaRopa');
+  const divTallaCalzado = document.getElementById('divTallaCalzado');
+  const mensajeSinTipo = document.getElementById('mensajeSinTipo');
+  const inputTallaRopa = document.getElementById('tallaRopa');
+  const inputTallaCalzado = document.getElementById('tallaCalzado');
+  const checkSegundaOportunidad = document.getElementById('esSegundaOportunidad');
+
+  marcaSelect.addEventListener('change', function() {
+      if(this.value === 'OTRO') {
+          marcaManual.classList.remove('d-none');
+          marcaManual.required = true;
+          marcaManual.focus();
+      } else {
+          marcaManual.classList.add('d-none');
+          marcaManual.required = false;
+          marcaManual.value = ''; 
+      }
+  });
+
+  tipoProductoSelect.addEventListener('change', function() {
+      const tipo = this.value;
+      divTallaRopa.classList.add('d-none');
+      divTallaCalzado.classList.add('d-none');
+      mensajeSinTipo.classList.add('d-none');
+      inputTallaRopa.required = false;
+      inputTallaCalzado.required = false;
+
+      if (tipo === 'Calzado') {
+          divTallaCalzado.classList.remove('d-none');
+          inputTallaCalzado.required = true;
+      } else if (['Playeras', 'Tops', 'Shorts', 'Sudaderas', 'Hoodies', 'Faldas', 'Joggers', 'Leggins'].includes(tipo)) {
+          divTallaRopa.classList.remove('d-none');
+          inputTallaRopa.required = true;
+      } else {
+          mensajeSinTipo.classList.remove('d-none');
+      }
+  });
+
+  function currencyMX(n){
+    return Number(n||0).toLocaleString('es-MX',{
+      style: 'currency',
+      currency: 'MXN'
+    });
+  }
+
+  imagenesInput.addEventListener('change', function(e) {
+    previewDiv.innerHTML = '';
+    const files = Array.from(e.target.files);
+    files.forEach(file => {
+      if (!file.type.startsWith('image/')) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.className = 'thumb';
+        previewDiv.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  function renderProducts(productos) {
+    container.innerHTML = '';
+    if (productos.length === 0) {
+      container.innerHTML = `
+        <div class="col-12 text-center py-5">
+          <div class="p-5 bg-white rounded-4 shadow-sm">
+            <i class="bi bi-inbox display-1 text-muted"></i>
+            <h4 class="text-muted mt-3">No hay productos</h4>
+            <p class="text-muted">Agrega tu primer producto haciendo clic en "Nuevo Producto"</p>
+          </div>
+        </div>`;
+      return;
+    }
+    
+    productos.forEach(p => {
+      const col = document.createElement('div');
+      col.className = 'col-md-6 col-lg-4 mb-4';
+
+      const imagenesHTML = Array.isArray(p.imagenes) && p.imagenes.length > 0 
+        ? p.imagenes.slice(0, 3).map(url => `<img src="${url}" class="thumb" alt="${p.nombre}">`).join('')
+        : `<img src="${p.imagenUrl || 'https://via.placeholder.com/100x100?text=Sin+Imagen'}" class="thumb" alt="${p.nombre}">`;
+
+      let tallaBadge = '';
+      if (p.tallaRopa) tallaBadge = `<span class="badge badge-talla ms-1">${p.tallaRopa}</span>`;
+      if (p.tallaCalzado) tallaBadge = `<span class="badge badge-talla ms-1">${p.tallaCalzado} MX</span>`;
+
+      // BADGE DE SEGUNDA OPORTUNIDAD (SIN ICONO)
+      let segundaBadge = '';
+      if (p.esSegundaOportunidad) {
+        // === CAMBIO AQUÍ: SOLO TEXTO ===
+        segundaBadge = `<span class="badge badge-segunda ms-1">2da Oportunidad</span>`;
+      }
+
+      col.innerHTML = `
+        <div class="card h-100">
+          <div class="card-body">
+            <div class="thumb-grid mb-3">
+              ${imagenesHTML}
+            </div>
+            <div class="d-flex justify-content-between align-items-start">
+                <h5 class="card-title fw-bold text-truncate" style="max-width: 60%; font-weight: 700;">${p.nombre}</h5>
+                <span class="badge rounded-pill bg-success">${currencyMX(p.precio)}</span>
+            </div>
+            
+            <div class="mb-2">
+                <span class="badge badge-marca">${p.marca || 'Generico'}</span>
+                <span class="badge badge-genero">${p.genero || 'Unisex'}</span>
+                ${tallaBadge}
+                ${segundaBadge}
+            </div>
+            
+            <div class="text-muted small mb-2 fst-italic border-bottom pb-1">${p.tipoProducto || 'General'}</div>
+
+            <p class="card-text text-muted small text-truncate">${p.descripcion}</p>
+            
+            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+                <small class="text-muted">
+                    <i class="bi bi-box-seam"></i> Stock: 
+                    <strong class="${p.stock > 0 ? 'text-dark' : 'text-danger'}">${p.stock}</strong>
+                </small>
+                <button class="btn btn-outline-danger btn-sm rounded-pill px-3" data-action="delete" data-id="${p._id}">
+                    <i class="bi bi-trash3"></i>
+                </button>
+            </div>
+          </div>
+        </div>`;
+      container.appendChild(col);
+    });
+
+    container.querySelectorAll('[data-action="delete"]').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const id = e.currentTarget.getAttribute('data-id');
+        if (id && confirm('¿Eliminar permanentemente?')) {
+          await deleteDoc(doc(db,'productos', id));
+        }
+      });
+    });
+  }
+
+  const productosRef = collection(db, 'productos');
+  const q = query(productosRef, orderBy('createdAt','desc'));
+
+  onSnapshot(q, (snap) => {
+    const arr = snap.docs.map(d => ({ _id: d.id, ...d.data() }));
+    renderProducts(arr);
+  });
+
+  async function uploadImagesToCloudinary(files) {
+    const urls = [];
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", uploadPreset);
+      formData.append("folder", "productos");
+      try {
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+          method: "POST",
+          body: formData
+        });
+        const data = await res.json();
+        if (data.secure_url) urls.push(data.secure_url);
+      } catch (error) { console.error(error); }
+    }
+    return urls;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submitBtn = document.getElementById('submitBtn');
+    const spinner = document.getElementById('submitSpinner');
+    submitBtn.disabled = true;
+    spinner.classList.remove('d-none');
+
+    const precio = parseFloat(document.getElementById('precioProducto').value || '0');
+    const stock = parseInt(document.getElementById('stock').value || '0');
+    if(precio < 0 || stock < 0) {
+        alert("Precio y stock deben ser positivos");
+        submitBtn.disabled = false;
+        spinner.classList.add('d-none');
+        return;
+    }
+
+    let marcaFinal = marcaSelect.value;
+    if (marcaFinal === 'OTRO') {
+        marcaFinal = marcaManual.value.trim().toUpperCase();
+    }
+
+    const tipo = tipoProductoSelect.value;
+    let tallaRopa = null;
+    let tallaCalzado = null;
+
+    if(tipo === 'Calzado') {
+        tallaCalzado = inputTallaCalzado.value;
+    } else {
+        tallaRopa = inputTallaRopa.value;
+    }
+
+    const nombre = document.getElementById('nombreProducto').value.trim();
+    const genero = document.getElementById('genero').value;     
+    const descripcion = document.getElementById('descripcion').value.trim();
+    const imagenesInput = document.getElementById('imagenesProducto');
+    const esSegundaOportunidad = checkSegundaOportunidad.checked;
+
+    try {
+      let imagenesUrls = [];
+      if (imagenesInput.files.length > 0) {
+        imagenesUrls = await uploadImagesToCloudinary(Array.from(imagenesInput.files));
+      }
+
+      await addDoc(productosRef, {
+        nombre, precio, stock, descripcion, 
+        marca: marcaFinal,
+        genero, 
+        tipoProducto: tipo, 
+        categoria: tipo, 
+        tallaRopa,
+        tallaCalzado,
+        esSegundaOportunidad, 
+        imagenes: imagenesUrls, 
+        imagenUrl: imagenesUrls[0] || '',
+        createdAt: serverTimestamp()
+      });
+
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3 shadow`;
+      alertDiv.style.zIndex = '2000';
+      alertDiv.innerHTML = `Producto guardado <button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
+      document.body.appendChild(alertDiv);
+      setTimeout(() => alertDiv.remove(), 4000);
+      
+      e.target.reset();
+      previewDiv.innerHTML = '';
+      divTallaRopa.classList.add('d-none');
+      divTallaCalzado.classList.add('d-none');
+      mensajeSinTipo.classList.remove('d-none');
+      marcaManual.classList.add('d-none');
+      checkSegundaOportunidad.checked = false;
+
+      modal.hide();
+
+    } catch (error) {
+      console.error(error);
+      alert('Error al guardar');
+    } finally {
+      submitBtn.disabled = false;
+      spinner.classList.add('d-none');
+    }
+  });
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js');
+  }
+</script>
+</body>
+</html>
