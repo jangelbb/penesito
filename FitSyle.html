@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitSyle - Inicio</title>
+    
+    <!-- Enlace al Manifiesto PWA -->
+    <link rel="manifest" href="manifest.webmanifest">
+    <!-- Color del navegador móvil -->
+    <meta name="theme-color" content="#014421">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Alertas -->
+    <div id="alert-container" class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 2050; width: 90%; max-width: 400px;"></div>
+
+    <div id="offline-indicator" class="position-fixed bottom-0 start-0 m-3 p-2 bg-danger text-white rounded shadow d-none" style="z-index: 3000;">
+        <i class="bi bi-wifi-off"></i> Modo Offline
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-main sticky-top">
+        <div class="container-fluid d-flex justify-content-between align-items-center position-relative">
+            <a class="navbar-brand d-flex align-items-center order-1" href="index.html">
+                <img src="Img/logo.png" alt="FitSyle" onerror="this.src='lojo.png'">
+                <span class="navbar-brand-text ms-2 d-none d-sm-inline">FitSyle</span>
+            </a>
+            
+            <div class="search-container order-2">
+                <div class="search-input-wrapper">
+                    <i class="bi bi-search search-icon"></i>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Buscar productos">
+                    <i class="bi bi-x search-clear-icon d-none" id="clearSearchBtn"></i>
+                </div>
+            </div>
+
+            <button class="navbar-toggler order-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <i class="bi bi-list text-white"></i>
+            </button>
+
+            <div class="collapse navbar-collapse order-4 order-lg-3" id="navbarContent">
+                <div class="d-flex align-items-center ms-auto">
+                    <a class="btn btn-icon fs-4 me-3 text-white" href="#" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
+                        <i class="bi bi-cart3"></i>
+                        <span class="cart-badge d-none" id="cart-badge">0</span>
+                    </a>
+                    <a class="btn btn-icon fs-4 text-white" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        <i class="bi bi-person-circle"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Banner -->
+    <section class="carousel-icon-wrapper">
+        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button> 
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active"><img src="img/pwa-01.png" alt="Banner 1"></div>
+                <div class="carousel-item"><img src="img/pwa2-01.png" alt="Banner 2"></div>
+                <div class="carousel-item"><img src="Img/teni_Mesa de trabajo 1_Mesa de trabajo 1_Mesa de trabajo 1.jpg" alt="Banner 3"></div>
+            </div>
+            
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <div class="carousel-control-icon-bg"><i class="bi bi-chevron-left"></i></div>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <div class="carousel-control-icon-bg"><i class="bi bi-chevron-right"></i></div>
+            </button>
+        </div>
+
+        <div class="features-overlay">
+            <div class="rounded-pill-custom">
+                <div class="row g-2 justify-content-center"> 
+                    <div class="col-3 icon-feature">
+                        <div class="icon-circle shadow-sm"><i class="bi bi-percent"></i></div>
+                        <h5>DESCUENTOS</h5>
+                    </div>
+                    <div class="col-3 icon-feature">
+                        <div class="icon-circle shadow-sm"><i class="bi bi-truck"></i></div>
+                        <h5>ENVÍO RÁPIDO</h5>
+                    </div>
+                    <div class="col-3 icon-feature">
+                        <div class="icon-circle shadow-sm"><i class="bi bi-wallet2"></i></div>
+                        <h5>PAGO SEGURO</h5>
+                    </div>
+                    <div class="col-3 icon-feature">
+                        <div class="icon-circle shadow-sm"><i class="bi bi-patch-check"></i></div>
+                        <h5>CALIDAD</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container category-filter-bar">
+        <button class="filter-pill active" data-filter="all">Ver Todo</button>
+        <button class="filter-pill" data-filter="mujer">Mujer</button>
+        <button class="filter-pill" data-filter="hombre">Hombre</button>
+        <button class="filter-pill" data-filter="unisex">Unisex</button>
+        <button class="filter-pill" data-filter="segunda">Segunda Oportunidad</button>
+    </div>
+
+    <div class="container mb-5">
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2 g-md-4" id="productsContainer">
+            <div class="col-12 text-center py-5">
+                <div class="spinner-border text-success" role="status"></div>
+                <p class="mt-2 text-muted">Cargando productos...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carrito -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold text-success">Tu Carrito</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column">
+            <div id="lista-carrito-container" class="flex-grow-1 overflow-auto"></div>
+            
+            <div id="cart-footer" class="cart-total-section d-none">
+                <div class="cart-total-row">
+                    <span class="cart-total-label">Total:</span>
+                    <span class="cart-total-amount">$<span id="total">0.00</span></span>
+                </div>
+                <button id="pagar" class="btn btn-action-cart">
+                    <i class="bi bi-credit-card"></i> Pagar Ahora
+                </button>
+                <button id="limpiar-carrito" class="btn btn-action-cart">
+                    <i class="bi bi-trash3"></i> Vaciar Carrito
+                </button>
+                <button class="btn btn-action-cart" data-bs-dismiss="offcanvas">
+                    <i class="bi bi-arrow-left"></i> Seguir Comprando
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-main text-center">
+        <div class="container">
+            <h4 class="mb-3 font-oswald">FITSYLE</h4>
+            <p class="small opacity-75">Estilo, confort y rendimiento.</p>
+            <div class="mt-4 small">© 2025 FitSyle - Todos los derechos reservados.</div>
+        </div>
+    </footer>
+
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1030;">
+        <button id="aiChatToggleBtn" class="btn btn-ai-assistant rounded-circle shadow-lg" type="button" data-bs-toggle="modal" data-bs-target="#aiChatModal">
+            <i class="bi bi-robot fs-3"></i>
+        </button>
+    </div>
+    <div class="modal fade" id="aiChatModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 2rem; border: none; overflow: hidden;">
+                <div class="modal-header" style="background-color: var(--fitsyle-green); color: white; border: none;">
+                    <h5 class="modal-title"><i class="bi bi-robot me-2"></i>Asistente FitSyle</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" style="background-color: #f8f9fa;">
+                    <div id="chat-messages" class="mb-3" style="height: 300px; overflow-y: auto; padding: 10px;"></div>
+                    <div class="input-group">
+                        <input type="text" id="chat-input" class="form-control" placeholder="Escribe tu pregunta..." style="border-radius: 2rem 0 0 2rem;">
+                        <button class="btn btn-primary" type="button" id="chat-send" style="background-color: var(--fitsyle-green); border:none; border-radius: 0 2rem 2rem 0;"><i class="bi bi-send"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login -->
+    <div class="modal fade modal-login-custom" id="loginModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Bienvenido a FitSyle</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <button id="googleLoginBtn" class="btn btn-google">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G" width="20">
+                        Continuar con Google
+                    </button>
+                    <div class="text-center text-muted mb-3 small">o ingresa con tu correo</div>
+                    <form id="authForm">
+                        <div class="mb-3 d-none" id="nameGroup">
+                            <input type="text" class="form-control form-control-login" id="registerName" placeholder="Tu Nombre">
+                        </div>
+                        <input type="email" class="form-control form-control-login" id="loginEmail" placeholder="Correo electrónico" required>
+                        <input type="password" class="form-control form-control-login" id="loginPassword" placeholder="Contraseña" required>
+                        <button type="submit" class="btn btn-login-submit" id="submitBtn">INICIAR SESIÓN</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <a href="#" class="small text-success fw-bold text-decoration-none" id="toggleAuthMode">¿No tienes cuenta? Regístrate</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // === 1. CONFIGURACIÓN PARA EL LOGIN (TU PROYECTO FITSYLE) ===
+        const authConfig = {
+            apiKey: "AIzaSyAuyh4pHllhtZLbgFgfZF4tlJrncFy4R7g",
+            authDomain: "fitsyle.firebaseapp.com",
+            projectId: "fitsyle",
+            storageBucket: "fitsyle.firebasestorage.app",
+            messagingSenderId: "595367121052",
+            appId: "1:595367121052:web:c19aac0ed1986dfb389d59",
+            measurementId: "G-J46KZD01W3"
+        };
+
+        // === 2. CONFIGURACIÓN PARA LOS PRODUCTOS (EL PROYECTO 1) ===
+        const dbConfig = {
+            apiKey: "AIzaSyB_LcA4zZk6gZcAPH38HDMxXVqlelgGLQ8",
+            authDomain: "proyecto1-b6570.firebaseapp.com",
+            projectId: "proyecto1-b6570",
+            storageBucket: "proyecto1-b6570.firebasestorage.app",
+            messagingSenderId: "575435247117",
+            appId: "1:575435247117:web:88bfac2a385f43158a4f44",
+            measurementId: "G-R4L645TLDL"
+        };
+
+        // INICIALIZAMOS DOS APPS DIFERENTES
+        const appAuth = initializeApp(authConfig, "AppLogin"); // App exclusiva para Login
+        const appDB = initializeApp(dbConfig, "AppProductos"); // App exclusiva para Datos
+
+        // Obtenemos los servicios de cada una
+        const auth = getAuth(appAuth);  // Login con TU proyecto
+        const db = getFirestore(appDB); // Datos con el OTRO proyecto
+        
+        const googleProvider = new GoogleAuthProvider();
+
+        enableIndexedDbPersistence(db).catch((err) => {
+            console.log('Persistencia:', err.code);
+        });
+
+        // Detector de conexión
+        window.addEventListener('offline', () => document.getElementById('offline-indicator').classList.remove('d-none'));
+        window.addEventListener('online', () => document.getElementById('offline-indicator').classList.add('d-none'));
+
+        let allProducts = [];
+        let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+        let currentCategory = 'all';
+        let currentSearchTerm = '';
+
+        const productsContainer = document.getElementById('productsContainer');
+        const searchInput = document.getElementById('searchInput');
+        const clearSearchBtn = document.getElementById('clearSearchBtn');
+        
+        // Carga rápida del caché
+        const cachedProducts = localStorage.getItem('productosCache');
+        if (cachedProducts) {
+            allProducts = JSON.parse(cachedProducts);
+            renderProducts(allProducts);
+        }
+
+        const q = query(collection(db, "productos"), orderBy("createdAt", "desc"));
+        
+        // Conectamos a la base de datos (proyecto1)
+        onSnapshot(q, (snapshot) => {
+            const nuevosProductos = snapshot.docs.map(doc => {
+                const d = doc.data();
+                return {
+                    id: doc.id,
+                    nombre: d.nombre || '',
+                    precio: Number(d.precio) || 0,
+                    descripcion: d.descripcion || '',
+                    imagenes: d.imagenes || [],
+                    imagenUrl: d.imagenUrl || 'https://via.placeholder.com/300x300?text=No+Image',
+                    genero: d.genero || 'UNISEX',
+                    marca: d.marca,
+                    tallaRopa: d.tallaRopa,
+                    tallaCalzado: d.tallaCalzado,
+                    stock: Number(d.stock),
+                    esSegundaOportunidad: d.esSegundaOportunidad === true 
+                };
+            });
+            
+            if (nuevosProductos.length > 0) {
+                allProducts = nuevosProductos;
+                localStorage.setItem('productosCache', JSON.stringify(allProducts));
+                applyFilters();
+            }
+        }, (error) => {
+            console.log("Error de conexión con Firebase:", error);
+            // Si el error es "permission-denied", es porque la otra base de datos requiere login de SU proyecto.
+        });
+
+        function applyFilters() {
+            let filtered = allProducts;
+            if (currentCategory === 'mujer') filtered = filtered.filter(p => p.genero === 'MUJER');
+            else if (currentCategory === 'hombre') filtered = filtered.filter(p => p.genero === 'HOMBRE');
+            else if (currentCategory === 'unisex') filtered = filtered.filter(p => p.genero === 'UNISEX');
+            else if (currentCategory === 'segunda') filtered = filtered.filter(p => p.esSegundaOportunidad === true);
+
+            if (currentSearchTerm) {
+                const term = currentSearchTerm.toLowerCase();
+                filtered = filtered.filter(p => 
+                    p.nombre.toLowerCase().includes(term) || 
+                    p.descripcion.toLowerCase().includes(term) ||
+                    (p.marca && p.marca.toLowerCase().includes(term))
+                );
+            }
+            renderProducts(filtered);
+        }
+
+        document.querySelectorAll('.filter-pill').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCategory = btn.dataset.filter;
+                applyFilters();
+            });
+        });
+
+        if(searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                currentSearchTerm = e.target.value.trim();
+                if (currentSearchTerm.length > 0) clearSearchBtn.classList.remove('d-none');
+                else clearSearchBtn.classList.add('d-none');
+                applyFilters();
+            });
+        }
+
+        if(clearSearchBtn) {
+            clearSearchBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                currentSearchTerm = '';
+                clearSearchBtn.classList.add('d-none');
+                applyFilters();
+                searchInput.focus();
+            });
+        }
+
+        function renderProducts(products) {
+            productsContainer.innerHTML = '';
+            if(products.length === 0) {
+                productsContainer.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted fs-5">Cargando productos...</p></div>';
+                return;
+            }
+
+            products.forEach(p => {
+                let imgHTML = `<img src="${p.imagenUrl}" class="product-img" alt="${p.nombre}">`;
+                if(p.imagenes.length > 1) {
+                    const slides = p.imagenes.map((url, i) => 
+                        `<div class="carousel-item ${i===0?'active':''}"><img src="${url}" class="product-img" alt="${p.nombre}"></div>`
+                    ).join('');
+                    imgHTML = `<div id="car-${p.id}" class="carousel slide h-100" data-bs-ride="false"><div class="carousel-inner h-100">${slides}</div></div>`;
+                }
+
+                let talla = p.tallaRopa ? p.tallaRopa : (p.tallaCalzado ? p.tallaCalzado + ' MX' : '');
+                let tallaBadge = talla ? `<span class="badge-talla-client">${talla}</span>` : '';
+                let segundaBadge = p.esSegundaOportunidad ? `<div class="badge-segunda-container"><span class="badge-segunda-oportunidad">2da Oportunidad</span></div>` : '';
+                const btnState = p.stock <= 0 ? 'disabled' : '';
+                const btnText = p.stock <= 0 ? 'Agotado' : 'Añadir al Carrito';
+
+                const html = `
+                <div class="col product-item">
+                    <div class="card-product-style">
+                        <div class="img-wrapper">${imgHTML}</div>
+                        <div class="card-body">
+                            <h5 class="card-title">${p.nombre}</h5>
+                            <div class="badges-container">
+                                <span class="badge-marca-client">${p.marca || 'GENERICO'}</span>
+                                <span class="badge-genero-client">${p.genero || 'UNISEX'}</span>
+                                ${tallaBadge}
+                                ${segundaBadge} 
+                            </div>
+                            <p class="card-text">${p.descripcion}</p>
+                            <div class="price-stock-container">
+                                <p class="price">$${p.precio.toFixed(2)}</p>
+                                <small class="stock-info">${p.stock} disponibles</small>
+                            </div>
+                            <div class="actions-container">
+                                <input type="number" id="qty-${p.id}" class="qty-input" value="1" min="1" max="${p.stock}">
+                                <button class="btn-add-cart" onclick="window.addToCart('${p.id}')" ${btnState}>${btnText}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+                productsContainer.innerHTML += html;
+            });
+
+            document.querySelectorAll('.card-product-style .carousel').forEach(el => {
+                const bsCar = new bootstrap.Carousel(el, { interval: 1500, pause: false });
+                el.closest('.card-product-style').addEventListener('mouseenter', () => bsCar.cycle());
+                el.closest('.card-product-style').addEventListener('mouseleave', () => { bsCar.pause(); bsCar.to(0); });
+            });
+        }
+
+        window.addToCart = (id) => {
+            const prod = allProducts.find(p => p.id === id);
+            const qtyInput = document.getElementById(`qty-${id}`);
+            const qty = parseInt(qtyInput.value) || 1;
+            if(qty > prod.stock) { alert(`Solo quedan ${prod.stock}`); return; }
+            const exist = carrito.find(i => i.id === id);
+            if(exist) {
+                if(exist.cantidad + qty > prod.stock) { alert("Stock insuficiente"); return; }
+                exist.cantidad += qty;
+            } else {
+                carrito.push({ ...prod, cantidad: qty });
+            }
+            saveCart();
+            qtyInput.value = 1;
+        };
+
+        window.removeFromCart = (idx) => {
+            if(confirm("¿Eliminar producto?")) {
+                carrito.splice(idx, 1);
+                saveCart();
+            }
+        };
+
+        function saveCart() {
+            localStorage.setItem("carrito", JSON.stringify(carrito));
+            renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('lista-carrito-container');
+            const footer = document.getElementById('cart-footer');
+            container.innerHTML = '';
+            
+            if (carrito.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-cart-message">
+                        <i class="bi bi-bag-x empty-cart-icon"></i>
+                        <h5>Tu carrito está vacío</h5>
+                        <p class="text-muted small mb-4">¡Explora nuestra tienda y encuentra tu estilo!</p>
+                        <button class="btn btn-action-cart w-75 mx-auto" data-bs-dismiss="offcanvas">Ir a Comprar</button>
+                    </div>`;
+                footer.classList.add('d-none');
+                document.getElementById('cart-badge').classList.add('d-none');
+                return;
+            } else {
+                footer.classList.remove('d-none');
+            }
+
+            let total = 0;
+            let count = 0;
+            
+            carrito.forEach((item, idx) => {
+                total += item.precio * item.cantidad;
+                count += item.cantidad;
+                container.innerHTML += `
+                    <div class="cart-item-card">
+                        <img src="${item.imagenUrl}" class="cart-item-img" alt="${item.nombre}">
+                        <div class="cart-item-info">
+                            <div class="cart-item-title">${item.nombre}</div>
+                            <div>
+                                <span class="cart-item-price-pill">${item.cantidad} x $${item.precio.toFixed(0)}</span>
+                                <span class="cart-item-total">$${(item.precio * item.cantidad).toFixed(2)}</span>
+                            </div>
+                        </div>
+                        <button class="btn-remove-item" onclick="window.removeFromCart(${idx})"><i class="bi bi-x-lg"></i></button>
+                    </div>`;
+            });
+            
+            document.getElementById('total').innerText = total.toFixed(2);
+            const badge = document.getElementById('cart-badge');
+            badge.innerText = count;
+            badge.classList.remove('d-none');
+        }
+
+        document.getElementById('limpiar-carrito').onclick = () => { if(confirm("¿Vaciar carrito?")) { carrito = []; saveCart(); } };
+        document.getElementById('pagar').onclick = () => {
+            const t = document.getElementById('total').innerText;
+            if(confirm(`¿Confirmar compra por $${t}?`)) {
+                carrito = []; saveCart();
+                bootstrap.Offcanvas.getInstance(document.getElementById('cartOffcanvas')).hide();
+                alert("¡Compra realizada con éxito!");
+            }
+        };
+
+        renderCart();
+
+        let isLogin = true;
+        const toggle = document.getElementById('toggleAuthMode');
+        toggle.onclick = (e) => {
+            e.preventDefault();
+            isLogin = !isLogin;
+            document.querySelector('.modal-title').innerText = isLogin ? "Bienvenido a FitSyle" : "Crear Cuenta";
+            document.getElementById('submitBtn').innerText = isLogin ? "INICIAR SESIÓN" : "REGISTRARSE";
+            toggle.innerText = isLogin ? "¿No tienes cuenta? Regístrate" : "¿Ya tienes cuenta? Inicia Sesión";
+            document.getElementById('nameGroup').classList.toggle('d-none', isLogin);
+        };
+
+        document.getElementById('authForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const pass = document.getElementById('loginPassword').value;
+            try {
+                if(isLogin) {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                    alert("¡Hola de nuevo!");
+                } else {
+                    const user = await createUserWithEmailAndPassword(auth, email, pass);
+                    await updateProfile(user.user, { displayName: document.getElementById('registerName').value });
+                    alert("Cuenta creada");
+                }
+                bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+            } catch(err) { alert(err.message); }
+        };
+
+        document.getElementById('googleLoginBtn').onclick = () => {
+            signInWithPopup(auth, googleProvider).then(() => {
+                alert("Bienvenido");
+                bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+            }).catch(e => { if(e.code.includes('unauthorized')) alert("Error de dominio."); else alert(e.message); });
+        };
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('SW registrado', reg))
+                .catch(err => console.log('Error SW', err));
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const sendBtn = document.getElementById('chat-send');
+            const chatInput = document.getElementById('chat-input');
+            const chatMsgs = document.getElementById('chat-messages');
+            let chatWelcomeShown = false; 
+
+            if(!chatWelcomeShown) {
+                appendMessage("¡Hola! 👋 Soy tu asistente personal de FitSyle. ¿Buscas algo en especial hoy? 👟✨", 'ai');
+                chatWelcomeShown = true;
+            }
+
+            function getProductListFromDOM() {
+                const products = [];
+                document.querySelectorAll('.card-product-style').forEach(card => {
+                    const title = card.querySelector('.card-title')?.textContent.trim() || 'Producto';
+                    const price = card.querySelector('.price')?.textContent.trim() || 'N/A';
+                    const badges = Array.from(card.querySelectorAll('.badge-marca-client, .badge-genero-client, .badge-talla-client')).map(b => b.textContent).join(' ');
+                    const desc = card.querySelector('.card-text')?.textContent.trim() || 'Sin descripción';
+                    const imgUrl = card.querySelector('img.product-img')?.src || '';
+                    
+                    products.push({ 
+                        nombre: title, 
+                        precio: price, 
+                        etiquetas: badges, 
+                        descripcion: desc,
+                        imagen: imgUrl
+                    });
+                });
+                return products;
+            }
+
+            async function callGeminiAPI(userQuery) {
+                const productsFromPage = getProductListFromDOM();
+                const productListJSON = JSON.stringify(productsFromPage);
+                
+                const systemPrompt = `Eres "FitSyle AI". Tu objetivo es vender. Responde SOLO con la información del producto o una recomendación directa. MÁXIMO 1 o 2 frases cortas. Usa emojis (👟, 🔥). NO uses asteriscos (**), guiones (-) ni caracteres de formato markdown, solo texto plano. Lista de productos: ${productListJSON}.`;
+                
+                const apiKey = "AIzaSyBK5X1dROuIiq0NPhtXL7Yc6A7IVhMdO84"; 
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+                
+                const payload = { 
+                    contents: [{ parts: [{ text: userQuery }] }], 
+                    systemInstruction: { parts: [{ text: systemPrompt }] } 
+                };
+
+                try {
+                    const response = await fetch(apiUrl, { 
+                        method: 'POST', 
+                        headers: { 'Content-Type': 'application/json' }, 
+                        body: JSON.stringify(payload) 
+                    });
+                    
+                    const result = await response.json();
+                    if(result.error) {
+                        console.error("API Error:", result.error);
+                        appendMessage("Ups, me mareé un poco 😵‍💫. ¿Me lo repites?", 'error');
+                        return;
+                    }
+
+                    let aiResponse = result.candidates?.[0]?.content?.parts?.[0]?.text || "¡Uy! No te escuché bien, ¿qué decías? 👂";
+                    aiResponse = aiResponse.replace(/[*_~`]/g, ''); 
+                    appendMessage(aiResponse, 'ai');
+
+                } catch (error) {
+                    console.error("Fetch Error:", error);
+                    appendMessage("Parece que mi conexión falló 🔌. Intenta de nuevo.", 'error');
+                }
+            }
+
+            function appendMessage(text, type) {
+                const div = document.createElement('div');
+                div.className = type === 'user' ? "text-end mb-2" : "text-start mb-2";
+                let colorClass = type === 'error' ? 'ai text-danger' : type; 
+                div.innerHTML = `<span class="ai-chat-message ${colorClass} d-inline-block text-start">${text.replace(/\n/g, '<br>')}</span>`;
+                chatMsgs.appendChild(div);
+                chatMsgs.scrollTop = chatMsgs.scrollHeight;
+            }
+
+            function sendMessage() {
+                const text = chatInput.value.trim();
+                if(text) {
+                    appendMessage(text, 'user');
+                    chatInput.value = '';
+                    callGeminiAPI(text);
+                }
+            }
+
+            sendBtn.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', function (e) { if (e.key === 'Enter') sendMessage(); });
+        });
+    </script>
+</body>
+</html>
