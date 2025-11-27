@@ -10,10 +10,7 @@
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
-    <!-- Importando Poppins y Oswald -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
-    
-    <!-- TU CSS EXTERNO -->
+    <!-- TU HOJA DE ESTILOS -->
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -48,36 +45,36 @@
             <div class="collapse navbar-collapse order-4 order-lg-3" id="navbarContent">
                 <div class="d-flex align-items-center ms-auto">
                     
-                    <!-- CARRITO (Texto solo en móvil) -->
+                    <!-- CARRITO -->
                     <a class="btn btn-icon fs-4 me-3 text-white position-relative d-flex align-items-center" href="#" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
                         <i class="bi bi-cart3"></i>
                         <span class="cart-text-mobile">Carrito</span>
                         <span class="cart-badge d-none" id="cart-badge">0</span>
                     </a>
                     
-                    <!-- ÁREA DE LOGIN / USUARIO -->
-                    
-                    <!-- Opción 1: No logueado (Botón Normal) -->
-                    <a class="btn btn-icon fs-4 text-white d-flex align-items-center" href="#" id="loginBtn" data-bs-toggle="modal" data-bs-target="#loginModal">
-                        <i class="bi bi-person-circle"></i>
-                        <span class="nav-text-label">Iniciar Sesión</span>
-                    </a>
-
-                    <!-- Opción 2: Logueado (Dropdown) -->
-                    <div class="dropdown d-none" id="userDropdown">
-                        <a class="btn btn-icon fs-4 text-white d-flex align-items-center dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
-                            <i class="bi bi-person-check-fill"></i>
-                            <span class="nav-text-label" id="navUserName">Usuario</span>
+                    <!-- USUARIO / LOGIN -->
+                    <div class="d-flex align-items-center">
+                        <!-- Botón Login (Se ve si NO hay usuario) -->
+                        <a class="btn btn-icon fs-4 text-white d-flex align-items-center" href="#" id="loginBtn" data-bs-toggle="modal" data-bs-target="#loginModal">
+                            <i class="bi bi-person-circle"></i>
+                            <span class="nav-text-label">Iniciar Sesión</span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-user">
-                            <li><span class="dropdown-header text-muted small text-uppercase">Mi Cuenta</span></li>
-                            <li>
-                                <button class="dropdown-item text-danger d-flex align-items-center justify-content-between" id="logoutBtn">
-                                    <span>Cerrar Sesión</span>
-                                    <i class="bi bi-box-arrow-right"></i>
-                                </button>
-                            </li>
-                        </ul>
+
+                        <!-- Dropdown Usuario (Se ve SI hay usuario) -->
+                        <div class="dropdown d-none" id="userDropdown">
+                            <a class="btn btn-icon fs-4 text-white d-flex align-items-center dropdown-toggle no-arrow" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
+                                <i class="bi bi-person-check-fill"></i>
+                                <span class="nav-text-label" id="navUserName">Usuario</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-user">
+                                <!-- SOLO LA OPCIÓN DE CERRAR SESIÓN COMO PEDISTE -->
+                                <li>
+                                    <button class="dropdown-item text-danger d-flex align-items-center gap-2" id="logoutBtn">
+                                        <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                 </div>
@@ -148,7 +145,7 @@
         </div>
     </div>
 
-    <!-- Carrito RESTAURADO (Sin cambiar nada de lo que te gustaba) -->
+    <!-- Carrito (DISEÑO RESTAURADO SEGÚN TU IMAGEN) -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas">
         <div class="offcanvas-header border-bottom">
             <h5 class="offcanvas-title fw-bold" style="color: var(--fitsyle-green);">Tu Carrito</h5>
@@ -162,7 +159,8 @@
                     <span class="cart-total-label">Total:</span>
                     <span class="cart-total-amount">$<span id="total">0.00</span></span>
                 </div>
-                <button id="pagar" class="btn btn-action-cart" style="background-color: var(--fitsyle-green); color: white;">
+                <!-- Botones estilizados como pediste -->
+                <button id="pagar" class="btn btn-action-cart" style="background-color: #e0e0e0; color: #333;">
                     <i class="bi bi-credit-card"></i> Pagar Ahora
                 </button>
                 <button id="limpiar-carrito" class="btn btn-action-cart">
@@ -283,7 +281,7 @@
         const logoutBtn = document.getElementById('logoutBtn');
         const alertContainer = document.getElementById('alert-container');
 
-        // === MANEJO DE SESIÓN ===
+        // === SESIÓN ===
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 loginBtn.classList.add('d-none');
@@ -395,7 +393,7 @@
             });
         }
 
-        // === FUNCION PARA EXPANDIR LA DESCRIPCION ===
+        // === EXPANDIR DESCRIPCIÓN ===
         window.toggleDescription = (card) => {
             const text = card.querySelector('.card-text');
             if(text) text.classList.toggle('expanded');
@@ -425,7 +423,6 @@
 
                 const html = `
                 <div class="col product-item">
-                    <!-- onclick para expandir la tarjeta -->
                     <div class="card-product-style" onclick="toggleDescription(this)">
                         <div class="img-wrapper">${imgHTML}</div>
                         <div class="card-body">
@@ -442,7 +439,6 @@
                                 <small class="stock-info">${p.stock} disponibles</small>
                             </div>
                             <div class="actions-container">
-                                <!-- stopPropagation para que al tocar botones NO se active el toggleDescription -->
                                 <input type="number" id="qty-${p.id}" class="qty-input" value="1" min="1" max="${p.stock}" onclick="event.stopPropagation()">
                                 <button class="btn-add-cart" onclick="event.stopPropagation(); window.addToCart('${p.id}')" ${btnState}>${btnText}</button>
                             </div>
@@ -494,7 +490,7 @@
             container.innerHTML = '';
             
             if (carrito.length === 0) {
-                // CARRITO VACÍO (Tu diseño original)
+                // CARRITO VACÍO ORIGINAL
                 container.innerHTML = `
                     <div class="empty-cart-message">
                         <i class="bi bi-bag-x empty-cart-icon"></i>
@@ -545,10 +541,8 @@
             }
         };
 
-        // --- LÓGICA LOGIN ---
         let isLogin = true;
         const toggle = document.getElementById('toggleAuthMode');
-        
         toggle.onclick = (e) => {
             e.preventDefault();
             isLogin = !isLogin;
@@ -563,7 +557,6 @@
             const email = document.getElementById('loginEmail').value;
             const pass = document.getElementById('loginPassword').value;
             const nameInput = document.getElementById('registerName');
-            
             try {
                 if(isLogin) {
                     await signInWithEmailAndPassword(auth, email, pass);
@@ -579,9 +572,7 @@
                 bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
             } catch(err) { 
                 console.error(err);
-                if (err.code === 'auth/operation-not-allowed') alert("ERROR: Activa 'Correo/Contraseña' en Firebase.");
-                else if (err.code === 'auth/email-already-in-use') alert("Correo ya registrado.");
-                else alert("Error: " + err.message);
+                alert("Error: " + err.message);
             }
         };
 
@@ -589,10 +580,7 @@
             signInWithPopup(auth, googleProvider).then(() => {
                 showAlert("Bienvenido", "success");
                 bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
-            }).catch(e => { 
-                if(e.code.includes('unauthorized')) alert("Dominio no autorizado en Firebase."); 
-                else alert(e.message); 
-            });
+            }).catch(e => { alert(e.message); });
         };
 
         function showAlert(msg, type) {
@@ -607,7 +595,7 @@
             navigator.serviceWorker.register('./sw.js').catch(err => console.log('Error SW', err));
         }
 
-        // --- CHATBOT ORIGINAL ---
+        // --- BOT RESTAURADO ---
         document.addEventListener('DOMContentLoaded', function() {
             const sendBtn = document.getElementById('chat-send');
             const chatInput = document.getElementById('chat-input');
@@ -644,6 +632,7 @@
                 const systemPrompt = `Eres "FitSyle AI". Tu objetivo es vender. Responde SOLO con la información del producto o una recomendación directa. MÁXIMO 1 o 2 frases cortas. Usa emojis (👟, 🔥). NO uses asteriscos (**), guiones (-) ni caracteres de formato markdown, solo texto plano. Lista de productos: ${productListJSON}.`;
                 
                 const apiKey = "AIzaSyBK5X1dROuIiq0NPhtXL7Yc6A7IVhMdO84"; 
+                // MODELO RESTAURADO
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
                 
                 const payload = { 
