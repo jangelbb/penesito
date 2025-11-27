@@ -57,18 +57,24 @@ h1, h3, h4, h5, h6, .navbar-brand, .display-6, .footer-main {
     outline: none;
 }
 
-/* === LÓGICA NAVBAR USUARIO Y CARRITO === */
+/* === MODIFICACIONES UI USUARIO === */
 
-/* Texto "Iniciar Sesión" y Nombre */
+/* Quitar la flecha del dropdown (Bootstrap agrega un ::after) */
+.dropdown-toggle::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Texto al lado del icono */
 .nav-text-label {
-    font-size: 0.9rem; /* Tamaño normal */
+    font-size: 0.9rem;
     font-weight: 500;
     margin-left: 8px;
     font-family: 'Poppins', sans-serif;
     vertical-align: middle;
 }
 
-/* Texto "Carrito" - SOLO visible en móvil */
+/* Carrito solo texto en móvil */
 .cart-text-mobile {
     display: inline-block;
     font-size: 0.9rem;
@@ -76,39 +82,21 @@ h1, h3, h4, h5, h6, .navbar-brand, .display-6, .footer-main {
     font-weight: 500;
     font-family: 'Poppins', sans-serif;
 }
-
-/* En pantallas grandes (Laptop/PC), ocultamos el texto "Carrito" */
 @media (min-width: 992px) {
-    .cart-text-mobile {
-        display: none !important;
-    }
+    .cart-text-mobile { display: none !important; }
 }
 
-/* Quitar la flecha del dropdown de usuario */
-.no-arrow::after {
-    display: none !important;
-    content: none !important;
-}
-
-/* Dropdown minimalista para cerrar sesión */
+/* Dropdown menú usuario */
 .dropdown-menu-user {
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
     border: none;
-    padding: 5px 0;
+    padding: 8px 0;
     margin-top: 10px;
-    min-width: 160px;
 }
 .dropdown-item {
     padding: 10px 20px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.9rem;
     font-weight: 500;
-    color: #dc3545; /* Rojo para cerrar sesión */
-}
-.dropdown-item:hover {
-    background-color: #fff5f5;
-    color: #a71d2a;
 }
 
 /* === BADGE CARRITO === */
@@ -213,7 +201,7 @@ h1, h3, h4, h5, h6, .navbar-brand, .display-6, .footer-main {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    cursor: pointer; /* Indicar que se puede tocar */
+    cursor: pointer;
     -webkit-tap-highlight-color: transparent;
 }
 .card-product-style:hover { transform: translateY(-5px); border-color: var(--fitsyle-green) !important; box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); }
@@ -237,16 +225,12 @@ h1, h3, h4, h5, h6, .navbar-brand, .display-6, .footer-main {
     color: #666; 
     font-size: 0.9rem; 
     margin-bottom: 1rem; 
-    /* Configuración original limitada */
     display: -webkit-box;
     -webkit-line-clamp: 5; 
     -webkit-box-orient: vertical; 
     overflow: hidden; 
-    /* Transición suave al cambiar altura */
     transition: max-height 0.5s ease;
 }
-
-/* Clase para cuando se expande */
 .card-text.expanded {
     -webkit-line-clamp: unset !important;
     overflow: visible !important;
@@ -264,7 +248,7 @@ h1, h3, h4, h5, h6, .navbar-brand, .display-6, .footer-main {
 .btn-add-cart:hover:not(:disabled) { background-color: var(--fitsyle-green); color: white; }
 .btn-add-cart:disabled { opacity: 0.6; cursor: not-allowed; }
 
-/* === CARRITO (ESTILO ORIGINAL) === */
+/* === CARRITO === */
 .cart-item-card { background: white; border: 1px solid #eee; border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
 .cart-item-img { width: 70px; height: 70px; object-fit: contain; border-radius: 8px; border: 1px solid #f0f0f0; margin-right: 15px; background-color: #fff; }
 .cart-item-info { flex-grow: 1; }
@@ -282,8 +266,11 @@ h1, h3, h4, h5, h6, .navbar-brand, .display-6, .footer-main {
 .btn-action-cart { background-color: #e0e0e0; color: #333; font-weight: 600; border-radius: 12px; padding: 12px; width: 100%; border: none; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease; font-family: 'Poppins', sans-serif; }
 .btn-action-cart:hover, .btn-action-cart:active { background-color: var(--fitsyle-green); color: white !important; box-shadow: 0 4px 8px rgba(1, 68, 33, 0.3); }
 
+/* ESTILO CARRITO VACÍO (Como tu imagen) */
 .empty-cart-message { text-align: center; padding: 40px 20px; color: #666; }
-.empty-cart-icon { font-size: 4rem; color: #ddd; margin-bottom: 15px; }
+.empty-cart-icon { font-size: 5rem; color: #e0e0e0; margin-bottom: 15px; } /* Icono grande y gris claro */
+.empty-cart-title { font-weight: 700; color: #555; margin-bottom: 0.5rem; font-size: 1.2rem; }
+.empty-cart-text { font-size: 0.9rem; color: #888; margin-bottom: 2rem; }
 
 /* === LOGIN === */
 .modal-login-custom .modal-content { border-radius: 25px !important; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.2); overflow: hidden; }
@@ -325,7 +312,7 @@ h1, h3, h4, h5, h6, .navbar-brand, .display-6, .footer-main {
     .search-icon { left: 8px; font-size: 0.8rem; }
     .navbar-toggler { font-size: 1.1rem; padding: 0.2rem; }
     
-    /* En móvil, la tarjeta se puede tocar más fácil */
+    /* Ajustes Móvil */
     .img-wrapper { height: 160px; } 
     .product-img { height: 100%; width: 100%; padding: 5px; }
     .card-body { padding: 0.8rem; }

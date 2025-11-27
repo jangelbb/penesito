@@ -15,7 +15,6 @@
 </head>
 
 <body>
-    <!-- Alertas -->
     <div id="alert-container" class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 2050; width: 90%; max-width: 400px;"></div>
 
     <div id="offline-indicator" class="position-fixed bottom-0 start-0 m-3 p-2 bg-danger text-white rounded shadow d-none" style="z-index: 3000;">
@@ -54,20 +53,17 @@
                     
                     <!-- USUARIO / LOGIN -->
                     <div class="d-flex align-items-center">
-                        <!-- Botón Login (Se ve si NO hay usuario) -->
                         <a class="btn btn-icon fs-4 text-white d-flex align-items-center" href="#" id="loginBtn" data-bs-toggle="modal" data-bs-target="#loginModal">
                             <i class="bi bi-person-circle"></i>
                             <span class="nav-text-label">Iniciar Sesión</span>
                         </a>
 
-                        <!-- Dropdown Usuario (Se ve SI hay usuario) -->
                         <div class="dropdown d-none" id="userDropdown">
                             <a class="btn btn-icon fs-4 text-white d-flex align-items-center dropdown-toggle no-arrow" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
                                 <i class="bi bi-person-check-fill"></i>
                                 <span class="nav-text-label" id="navUserName">Usuario</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-user">
-                                <!-- SOLO LA OPCIÓN DE CERRAR SESIÓN COMO PEDISTE -->
                                 <li>
                                     <button class="dropdown-item text-danger d-flex align-items-center gap-2" id="logoutBtn">
                                         <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
@@ -145,7 +141,7 @@
         </div>
     </div>
 
-    <!-- Carrito (DISEÑO RESTAURADO SEGÚN TU IMAGEN) -->
+    <!-- Carrito -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas">
         <div class="offcanvas-header border-bottom">
             <h5 class="offcanvas-title fw-bold" style="color: var(--fitsyle-green);">Tu Carrito</h5>
@@ -159,8 +155,7 @@
                     <span class="cart-total-label">Total:</span>
                     <span class="cart-total-amount">$<span id="total">0.00</span></span>
                 </div>
-                <!-- Botones estilizados como pediste -->
-                <button id="pagar" class="btn btn-action-cart" style="background-color: #e0e0e0; color: #333;">
+                <button id="pagar" class="btn btn-action-cart" style="background-color: var(--fitsyle-green); color: white;">
                     <i class="bi bi-credit-card"></i> Pagar Ahora
                 </button>
                 <button id="limpiar-carrito" class="btn btn-action-cart">
@@ -181,14 +176,12 @@
         </div>
     </footer>
 
-    <!-- Botón Chatbot -->
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1030;">
         <button id="aiChatToggleBtn" class="btn btn-ai-assistant rounded-circle shadow-lg" type="button" data-bs-toggle="modal" data-bs-target="#aiChatModal">
             <i class="bi bi-robot fs-3"></i>
         </button>
     </div>
     
-    <!-- Modal Chatbot -->
     <div class="modal fade" id="aiChatModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" style="border-radius: 2rem; border: none; overflow: hidden;">
@@ -207,7 +200,6 @@
         </div>
     </div>
 
-    <!-- Login Modal -->
     <div class="modal fade modal-login-custom" id="loginModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -244,7 +236,7 @@
         import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, onSnapshot, query, orderBy, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // 1. LOGIN (FITSYLE)
+        // CONFIGURACIÓN HÍBRIDA
         const authConfig = {
             apiKey: "AIzaSyAuyh4pHllhtZLbgFgfZF4tlJrncFy4R7g",
             authDomain: "fitsyle.firebaseapp.com",
@@ -255,7 +247,6 @@
             measurementId: "G-J46KZD01W3"
         };
 
-        // 2. DATOS (PROYECTO 1)
         const dbConfig = {
             apiKey: "AIzaSyB_LcA4zZk6gZcAPH38HDMxXVqlelgGLQ8",
             authDomain: "proyecto1-b6570.firebaseapp.com",
@@ -281,7 +272,6 @@
         const logoutBtn = document.getElementById('logoutBtn');
         const alertContainer = document.getElementById('alert-container');
 
-        // === SESIÓN ===
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 loginBtn.classList.add('d-none');
@@ -393,7 +383,6 @@
             });
         }
 
-        // === EXPANDIR DESCRIPCIÓN ===
         window.toggleDescription = (card) => {
             const text = card.querySelector('.card-text');
             if(text) text.classList.toggle('expanded');
@@ -490,12 +479,12 @@
             container.innerHTML = '';
             
             if (carrito.length === 0) {
-                // CARRITO VACÍO ORIGINAL
+                // DISEÑO ORIGINAL CARRITO VACÍO
                 container.innerHTML = `
                     <div class="empty-cart-message">
                         <i class="bi bi-bag-x empty-cart-icon"></i>
-                        <h5>Tu carrito está vacío</h5>
-                        <p class="text-muted small mb-4">¡Explora nuestra tienda y encuentra tu estilo!</p>
+                        <h5 class="empty-cart-title">Tu carrito está vacío</h5>
+                        <p class="empty-cart-text">¡Explora nuestra tienda y encuentra tu estilo!</p>
                         <button class="btn btn-action-cart w-75 mx-auto" data-bs-dismiss="offcanvas">Ir a Comprar</button>
                     </div>`;
                 footer.classList.add('d-none');
@@ -572,7 +561,8 @@
                 bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
             } catch(err) { 
                 console.error(err);
-                alert("Error: " + err.message);
+                if(err.code === 'auth/operation-not-allowed') alert("Error: Habilita Correo/Contraseña en Firebase.");
+                else alert("Error: " + err.message);
             }
         };
 
@@ -580,7 +570,7 @@
             signInWithPopup(auth, googleProvider).then(() => {
                 showAlert("Bienvenido", "success");
                 bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
-            }).catch(e => { alert(e.message); });
+            }).catch(e => { if(e.code.includes('unauthorized')) alert("Dominio no autorizado."); else alert(e.message); });
         };
 
         function showAlert(msg, type) {
@@ -612,15 +602,7 @@
                 document.querySelectorAll('.card-product-style').forEach(card => {
                     const title = card.querySelector('.card-title')?.textContent.trim() || 'Producto';
                     const price = card.querySelector('.price')?.textContent.trim() || 'N/A';
-                    const badges = Array.from(card.querySelectorAll('.badge-marca-client, .badge-genero-client, .badge-talla-client')).map(b => b.textContent).join(' ');
-                    const desc = card.querySelector('.card-text')?.textContent.trim() || 'Sin descripción';
-                    
-                    products.push({ 
-                        nombre: title, 
-                        precio: price, 
-                        etiquetas: badges, 
-                        descripcion: desc
-                    });
+                    products.push({ nombre: title, precio: price });
                 });
                 return products;
             }
@@ -628,39 +610,19 @@
             async function callGeminiAPI(userQuery) {
                 const productsFromPage = getProductListFromDOM();
                 const productListJSON = JSON.stringify(productsFromPage);
-                
-                const systemPrompt = `Eres "FitSyle AI". Tu objetivo es vender. Responde SOLO con la información del producto o una recomendación directa. MÁXIMO 1 o 2 frases cortas. Usa emojis (👟, 🔥). NO uses asteriscos (**), guiones (-) ni caracteres de formato markdown, solo texto plano. Lista de productos: ${productListJSON}.`;
-                
+                const systemPrompt = `Eres "FitSyle AI". Tu objetivo es vender. Lista de productos hoy: ${productListJSON}. Responde corto y con emojis.`;
                 const apiKey = "AIzaSyBK5X1dROuIiq0NPhtXL7Yc6A7IVhMdO84"; 
-                // MODELO RESTAURADO
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-                
-                const payload = { 
-                    contents: [{ parts: [{ text: userQuery }] }], 
-                    systemInstruction: { parts: [{ text: systemPrompt }] } 
-                };
+                const payload = { contents: [{ parts: [{ text: userQuery }] }], systemInstruction: { parts: [{ text: systemPrompt }] } };
 
                 try {
-                    const response = await fetch(apiUrl, { 
-                        method: 'POST', 
-                        headers: { 'Content-Type': 'application/json' }, 
-                        body: JSON.stringify(payload) 
-                    });
-                    
+                    const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                     const result = await response.json();
-                    if(result.error) {
-                        console.error("API Error:", result.error);
-                        appendMessage("Ups, me mareé un poco 😵‍💫. ¿Me lo repites?", 'error');
-                        return;
-                    }
-
-                    let aiResponse = result.candidates?.[0]?.content?.parts?.[0]?.text || "¡Uy! No te escuché bien, ¿qué decías? 👂";
+                    let aiResponse = result.candidates?.[0]?.content?.parts?.[0]?.text || "No te entendí bien.";
                     aiResponse = aiResponse.replace(/[*_~`]/g, ''); 
                     appendMessage(aiResponse, 'ai');
-
                 } catch (error) {
-                    console.error("Fetch Error:", error);
-                    appendMessage("Parece que mi conexión falló 🔌. Intenta de nuevo.", 'error');
+                    appendMessage("Error de conexión con la IA.", 'error');
                 }
             }
 
@@ -675,11 +637,7 @@
 
             function sendMessage() {
                 const text = chatInput.value.trim();
-                if(text) {
-                    appendMessage(text, 'user');
-                    chatInput.value = '';
-                    callGeminiAPI(text);
-                }
+                if(text) { appendMessage(text, 'user'); chatInput.value = ''; callGeminiAPI(text); }
             }
 
             sendBtn.addEventListener('click', sendMessage);
