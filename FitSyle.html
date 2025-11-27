@@ -10,26 +10,11 @@
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Importando Poppins y Oswald -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     
-    <style>
-        /* Estilo extra para el nombre de usuario en el navbar */
-        .user-name-display {
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin-left: 8px;
-            vertical-align: middle;
-            display: inline-block;
-            max-width: 100px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        @media(max-width: 400px) {
-            .user-name-display { display: none; } /* Ocultar nombre en pantallas muy pequeñas */
-        }
-    </style>
+    <!-- TU CSS EXTERNO -->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -62,16 +47,39 @@
 
             <div class="collapse navbar-collapse order-4 order-lg-3" id="navbarContent">
                 <div class="d-flex align-items-center ms-auto">
-                    <a class="btn btn-icon fs-4 me-3 text-white" href="#" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
+                    
+                    <!-- CARRITO (Texto solo en móvil) -->
+                    <a class="btn btn-icon fs-4 me-3 text-white position-relative d-flex align-items-center" href="#" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
                         <i class="bi bi-cart3"></i>
+                        <span class="cart-text-mobile">Carrito</span>
                         <span class="cart-badge d-none" id="cart-badge">0</span>
                     </a>
                     
-                    <!-- BOTÓN LOGIN / USUARIO MODIFICADO -->
+                    <!-- ÁREA DE LOGIN / USUARIO -->
+                    
+                    <!-- Opción 1: No logueado (Botón Normal) -->
                     <a class="btn btn-icon fs-4 text-white d-flex align-items-center" href="#" id="loginBtn" data-bs-toggle="modal" data-bs-target="#loginModal">
                         <i class="bi bi-person-circle"></i>
-                        <span id="navUserName" class="user-name-display"></span>
+                        <span class="nav-text-label">Iniciar Sesión</span>
                     </a>
+
+                    <!-- Opción 2: Logueado (Dropdown) -->
+                    <div class="dropdown d-none" id="userDropdown">
+                        <a class="btn btn-icon fs-4 text-white d-flex align-items-center dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
+                            <i class="bi bi-person-check-fill"></i>
+                            <span class="nav-text-label" id="navUserName">Usuario</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-user">
+                            <li><span class="dropdown-header text-muted small text-uppercase">Mi Cuenta</span></li>
+                            <li>
+                                <button class="dropdown-item text-danger d-flex align-items-center justify-content-between" id="logoutBtn">
+                                    <span>Cerrar Sesión</span>
+                                    <i class="bi bi-box-arrow-right"></i>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -140,10 +148,10 @@
         </div>
     </div>
 
-    <!-- Carrito -->
+    <!-- Carrito RESTAURADO (Sin cambiar nada de lo que te gustaba) -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas">
         <div class="offcanvas-header border-bottom">
-            <h5 class="offcanvas-title fw-bold text-success">Tu Carrito</h5>
+            <h5 class="offcanvas-title fw-bold" style="color: var(--fitsyle-green);">Tu Carrito</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
         <div class="offcanvas-body d-flex flex-column">
@@ -154,7 +162,7 @@
                     <span class="cart-total-label">Total:</span>
                     <span class="cart-total-amount">$<span id="total">0.00</span></span>
                 </div>
-                <button id="pagar" class="btn btn-action-cart">
+                <button id="pagar" class="btn btn-action-cart" style="background-color: var(--fitsyle-green); color: white;">
                     <i class="bi bi-credit-card"></i> Pagar Ahora
                 </button>
                 <button id="limpiar-carrito" class="btn btn-action-cart">
@@ -175,14 +183,14 @@
         </div>
     </footer>
 
-    <!-- Chatbot Button -->
+    <!-- Botón Chatbot -->
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1030;">
         <button id="aiChatToggleBtn" class="btn btn-ai-assistant rounded-circle shadow-lg" type="button" data-bs-toggle="modal" data-bs-target="#aiChatModal">
             <i class="bi bi-robot fs-3"></i>
         </button>
     </div>
     
-    <!-- Chatbot Modal -->
+    <!-- Modal Chatbot -->
     <div class="modal fade" id="aiChatModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" style="border-radius: 2rem; border: none; overflow: hidden;">
@@ -238,7 +246,7 @@
         import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, onSnapshot, query, orderBy, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // === 1. CONFIGURACIÓN LOGIN (TU PROYECTO FITSYLE) ===
+        // 1. LOGIN (FITSYLE)
         const authConfig = {
             apiKey: "AIzaSyAuyh4pHllhtZLbgFgfZF4tlJrncFy4R7g",
             authDomain: "fitsyle.firebaseapp.com",
@@ -249,7 +257,7 @@
             measurementId: "G-J46KZD01W3"
         };
 
-        // === 2. CONFIGURACIÓN PRODUCTOS (OTRO PROYECTO) ===
+        // 2. DATOS (PROYECTO 1)
         const dbConfig = {
             apiKey: "AIzaSyB_LcA4zZk6gZcAPH38HDMxXVqlelgGLQ8",
             authDomain: "proyecto1-b6570.firebaseapp.com",
@@ -269,40 +277,34 @@
 
         enableIndexedDbPersistence(db).catch((err) => console.log('Persistencia:', err.code));
 
-        // UI ELEMENTOS LOGIN
         const loginBtn = document.getElementById('loginBtn');
+        const userDropdown = document.getElementById('userDropdown');
         const navUserName = document.getElementById('navUserName');
+        const logoutBtn = document.getElementById('logoutBtn');
         const alertContainer = document.getElementById('alert-container');
 
-        // --- SISTEMA DE SESIÓN (AQUÍ ESTÁ LA MAGIA DEL ICONO) ---
+        // === MANEJO DE SESIÓN ===
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // SI ESTÁ LOGUEADO:
+                loginBtn.classList.add('d-none');
+                userDropdown.classList.remove('d-none');
                 const name = user.displayName ? user.displayName.split(' ')[0] : 'Usuario';
-                navUserName.textContent = name; // Muestra el nombre
-                
-                // Cambiamos el botón para que sea "Cerrar Sesión"
-                loginBtn.removeAttribute('data-bs-toggle'); // Ya no abre el modal
-                loginBtn.onclick = (e) => {
-                    e.preventDefault();
-                    if(confirm(`¿Hola ${name}, quieres cerrar sesión?`)) {
-                        signOut(auth).then(() => {
-                            showAlert("Has cerrado sesión", "success");
-                            window.location.reload(); // Recarga para limpiar carrito o estado
-                        });
-                    }
-                };
+                navUserName.textContent = name;
             } else {
-                // SI NO ESTÁ LOGUEADO:
-                navUserName.textContent = ""; // Borra el nombre
-                // Regresa a ser botón de Login
-                loginBtn.setAttribute('data-bs-toggle', 'modal');
-                loginBtn.setAttribute('data-bs-target', '#loginModal');
-                loginBtn.onclick = null; // Quita el evento de logout
+                loginBtn.classList.remove('d-none');
+                userDropdown.classList.add('d-none');
+                navUserName.textContent = "";
             }
         });
 
-        // Detector de conexión
+        logoutBtn.onclick = (e) => {
+            e.preventDefault();
+            signOut(auth).then(() => {
+                showAlert("Sesión cerrada", "success");
+                setTimeout(() => window.location.reload(), 1000);
+            });
+        };
+
         window.addEventListener('offline', () => document.getElementById('offline-indicator').classList.remove('d-none'));
         window.addEventListener('online', () => document.getElementById('offline-indicator').classList.add('d-none'));
 
@@ -341,13 +343,12 @@
                     esSegundaOportunidad: d.esSegundaOportunidad === true 
                 };
             });
-            
             if (nuevosProductos.length > 0) {
                 allProducts = nuevosProductos;
                 localStorage.setItem('productosCache', JSON.stringify(allProducts));
                 applyFilters();
             }
-        }, (error) => console.log("Conexión productos:", error));
+        });
 
         function applyFilters() {
             let filtered = allProducts;
@@ -379,8 +380,7 @@
         if(searchInput) {
             searchInput.addEventListener('input', (e) => {
                 currentSearchTerm = e.target.value.trim();
-                if (currentSearchTerm.length > 0) clearSearchBtn.classList.remove('d-none');
-                else clearSearchBtn.classList.add('d-none');
+                clearSearchBtn.classList.toggle('d-none', currentSearchTerm.length === 0);
                 applyFilters();
             });
         }
@@ -394,6 +394,12 @@
                 searchInput.focus();
             });
         }
+
+        // === FUNCION PARA EXPANDIR LA DESCRIPCION ===
+        window.toggleDescription = (card) => {
+            const text = card.querySelector('.card-text');
+            if(text) text.classList.toggle('expanded');
+        };
 
         function renderProducts(products) {
             productsContainer.innerHTML = '';
@@ -419,7 +425,8 @@
 
                 const html = `
                 <div class="col product-item">
-                    <div class="card-product-style">
+                    <!-- onclick para expandir la tarjeta -->
+                    <div class="card-product-style" onclick="toggleDescription(this)">
                         <div class="img-wrapper">${imgHTML}</div>
                         <div class="card-body">
                             <h5 class="card-title">${p.nombre}</h5>
@@ -435,8 +442,9 @@
                                 <small class="stock-info">${p.stock} disponibles</small>
                             </div>
                             <div class="actions-container">
-                                <input type="number" id="qty-${p.id}" class="qty-input" value="1" min="1" max="${p.stock}">
-                                <button class="btn-add-cart" onclick="window.addToCart('${p.id}')" ${btnState}>${btnText}</button>
+                                <!-- stopPropagation para que al tocar botones NO se active el toggleDescription -->
+                                <input type="number" id="qty-${p.id}" class="qty-input" value="1" min="1" max="${p.stock}" onclick="event.stopPropagation()">
+                                <button class="btn-add-cart" onclick="event.stopPropagation(); window.addToCart('${p.id}')" ${btnState}>${btnText}</button>
                             </div>
                         </div>
                     </div>
@@ -486,6 +494,7 @@
             container.innerHTML = '';
             
             if (carrito.length === 0) {
+                // CARRITO VACÍO (Tu diseño original)
                 container.innerHTML = `
                     <div class="empty-cart-message">
                         <i class="bi bi-bag-x empty-cart-icon"></i>
@@ -508,7 +517,7 @@
                 count += item.cantidad;
                 container.innerHTML += `
                     <div class="cart-item-card">
-                        <img src="${item.imagenUrl}" class="cart-item-img" alt="${item.nombre}">
+                        <img src="${item.imagenUrl}" class="cart-item-img" alt="${item.nombre}" onerror="this.src='https://via.placeholder.com/100x100?text=Error'">
                         <div class="cart-item-info">
                             <div class="cart-item-title">${item.nombre}</div>
                             <div>
@@ -536,7 +545,7 @@
             }
         };
 
-        // --- LÓGICA DE LOGIN Y REGISTRO ---
+        // --- LÓGICA LOGIN ---
         let isLogin = true;
         const toggle = document.getElementById('toggleAuthMode');
         
@@ -560,27 +569,19 @@
                     await signInWithEmailAndPassword(auth, email, pass);
                     showAlert("¡Hola de nuevo!", "success");
                 } else {
-                    // REGISTRO MEJORADO: Crea usuario Y actualiza nombre
                     const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
                     if(nameInput.value) {
                         await updateProfile(userCredential.user, { displayName: nameInput.value });
-                        // Forzamos actualización UI
-                        document.getElementById('navUserName').textContent = nameInput.value.split(' ')[0];
+                        navUserName.textContent = nameInput.value.split(' ')[0];
                     }
                     showAlert("Cuenta creada con éxito", "success");
                 }
                 bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
             } catch(err) { 
                 console.error(err);
-                if (err.code === 'auth/operation-not-allowed') {
-                    alert("⚠️ ERROR: No has activado 'Correo/Contraseña' en Firebase. Ve a la consola > Authentication > Sign-in method y actívalo.");
-                } else if (err.code === 'auth/email-already-in-use') {
-                    alert("⚠️ Ese correo ya está registrado. Intenta iniciar sesión.");
-                } else if (err.code === 'auth/weak-password') {
-                    alert("⚠️ La contraseña es muy débil. Usa al menos 6 caracteres.");
-                } else {
-                    alert("Error: " + err.message);
-                }
+                if (err.code === 'auth/operation-not-allowed') alert("ERROR: Activa 'Correo/Contraseña' en Firebase.");
+                else if (err.code === 'auth/email-already-in-use') alert("Correo ya registrado.");
+                else alert("Error: " + err.message);
             }
         };
 
@@ -606,7 +607,7 @@
             navigator.serviceWorker.register('./sw.js').catch(err => console.log('Error SW', err));
         }
 
-        // --- CHATBOT CORREGIDO (MODELO STABLE + TU API KEY) ---
+        // --- CHATBOT ORIGINAL ---
         document.addEventListener('DOMContentLoaded', function() {
             const sendBtn = document.getElementById('chat-send');
             const chatInput = document.getElementById('chat-input');
@@ -623,7 +624,15 @@
                 document.querySelectorAll('.card-product-style').forEach(card => {
                     const title = card.querySelector('.card-title')?.textContent.trim() || 'Producto';
                     const price = card.querySelector('.price')?.textContent.trim() || 'N/A';
-                    products.push({ nombre: title, precio: price });
+                    const badges = Array.from(card.querySelectorAll('.badge-marca-client, .badge-genero-client, .badge-talla-client')).map(b => b.textContent).join(' ');
+                    const desc = card.querySelector('.card-text')?.textContent.trim() || 'Sin descripción';
+                    
+                    products.push({ 
+                        nombre: title, 
+                        precio: price, 
+                        etiquetas: badges, 
+                        descripcion: desc
+                    });
                 });
                 return products;
             }
@@ -632,12 +641,10 @@
                 const productsFromPage = getProductListFromDOM();
                 const productListJSON = JSON.stringify(productsFromPage);
                 
-                const systemPrompt = `Eres "FitSyle AI". Vendedor amable. Lista de productos hoy: ${productListJSON}. Responde corto y con emojis.`;
+                const systemPrompt = `Eres "FitSyle AI". Tu objetivo es vender. Responde SOLO con la información del producto o una recomendación directa. MÁXIMO 1 o 2 frases cortas. Usa emojis (👟, 🔥). NO uses asteriscos (**), guiones (-) ni caracteres de formato markdown, solo texto plano. Lista de productos: ${productListJSON}.`;
                 
-                // TU API KEY AQUI
                 const apiKey = "AIzaSyBK5X1dROuIiq0NPhtXL7Yc6A7IVhMdO84"; 
-                // USANDO MODELO ESTABLE (NO PREVIEW)
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
                 
                 const payload = { 
                     contents: [{ parts: [{ text: userQuery }] }], 
@@ -652,19 +659,19 @@
                     });
                     
                     const result = await response.json();
-                    
                     if(result.error) {
-                        console.error("API Error detallado:", result.error);
-                        throw new Error(result.error.message);
+                        console.error("API Error:", result.error);
+                        appendMessage("Ups, me mareé un poco 😵‍💫. ¿Me lo repites?", 'error');
+                        return;
                     }
 
-                    let aiResponse = result.candidates?.[0]?.content?.parts?.[0]?.text || "No te entendí bien, ¿puedes repetir?";
+                    let aiResponse = result.candidates?.[0]?.content?.parts?.[0]?.text || "¡Uy! No te escuché bien, ¿qué decías? 👂";
                     aiResponse = aiResponse.replace(/[*_~`]/g, ''); 
                     appendMessage(aiResponse, 'ai');
 
                 } catch (error) {
                     console.error("Fetch Error:", error);
-                    appendMessage("Mi cerebro de IA está desconectado un momento 🔌. (Error: " + error.message + ")", 'error');
+                    appendMessage("Parece que mi conexión falló 🔌. Intenta de nuevo.", 'error');
                 }
             }
 
