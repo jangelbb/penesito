@@ -12,6 +12,24 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* Estilo extra para el nombre de usuario en el navbar */
+        .user-name-display {
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-left: 8px;
+            vertical-align: middle;
+            display: inline-block;
+            max-width: 100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        @media(max-width: 400px) {
+            .user-name-display { display: none; } /* Ocultar nombre en pantallas muy pequeñas */
+        }
+    </style>
 </head>
 
 <body>
@@ -49,11 +67,10 @@
                         <span class="cart-badge d-none" id="cart-badge">0</span>
                     </a>
                     
-                    <!-- BOTÓN LOGIN / USUARIO -->
-                    <!-- Modificado para mostrar nombre y manejar sesión -->
-                    <a class="btn btn-icon fs-4 text-white d-flex align-items-center gap-2" href="#" id="loginBtn" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <!-- BOTÓN LOGIN / USUARIO MODIFICADO -->
+                    <a class="btn btn-icon fs-4 text-white d-flex align-items-center" href="#" id="loginBtn" data-bs-toggle="modal" data-bs-target="#loginModal">
                         <i class="bi bi-person-circle"></i>
-                        <span id="userNameDisplay" class="fs-6 fw-bold" style="font-family: 'Poppins', sans-serif; font-size: 0.9rem !important;"></span>
+                        <span id="navUserName" class="user-name-display"></span>
                     </a>
                 </div>
             </div>
@@ -243,7 +260,6 @@
             measurementId: "G-R4L645TLDL"
         };
 
-        // Inicializamos las dos Apps
         const appAuth = initializeApp(authConfig, "AppLogin");
         const appDB = initializeApp(dbConfig, "AppProductos");
 
@@ -253,48 +269,40 @@
 
         enableIndexedDbPersistence(db).catch((err) => console.log('Persistencia:', err.code));
 
-        // UI ELEMENTOS
+        // UI ELEMENTOS LOGIN
         const loginBtn = document.getElementById('loginBtn');
-        const userNameDisplay = document.getElementById('userNameDisplay');
+        const navUserName = document.getElementById('navUserName');
         const alertContainer = document.getElementById('alert-container');
 
-        // --- MANEJO DE SESIÓN Y UI DE USUARIO ---
+        // --- SISTEMA DE SESIÓN (AQUÍ ESTÁ LA MAGIA DEL ICONO) ---
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // SESIÓN INICIADA
-                console.log("Usuario detectado:", user.email);
-                const name = user.displayName || user.email.split('@')[0];
-                userNameDisplay.textContent = name; // Pone el nombre al lado del icono
+                // SI ESTÁ LOGUEADO:
+                const name = user.displayName ? user.displayName.split(' ')[0] : 'Usuario';
+                navUserName.textContent = name; // Muestra el nombre
                 
-                // Cambiamos comportamiento del botón: CERRAR SESIÓN en vez de abrir modal
-                loginBtn.removeAttribute('data-bs-toggle');
-                loginBtn.removeAttribute('data-bs-target');
+                // Cambiamos el botón para que sea "Cerrar Sesión"
+                loginBtn.removeAttribute('data-bs-toggle'); // Ya no abre el modal
                 loginBtn.onclick = (e) => {
                     e.preventDefault();
-                    confirmLogout(name);
+                    if(confirm(`¿Hola ${name}, quieres cerrar sesión?`)) {
+                        signOut(auth).then(() => {
+                            showAlert("Has cerrado sesión", "success");
+                            window.location.reload(); // Recarga para limpiar carrito o estado
+                        });
+                    }
                 };
             } else {
-                // SESIÓN CERRADA
-                userNameDisplay.textContent = ""; // Borra el nombre
-                
-                // Regresamos comportamiento original: ABRIR MODAL
+                // SI NO ESTÁ LOGUEADO:
+                navUserName.textContent = ""; // Borra el nombre
+                // Regresa a ser botón de Login
                 loginBtn.setAttribute('data-bs-toggle', 'modal');
                 loginBtn.setAttribute('data-bs-target', '#loginModal');
-                loginBtn.onclick = null; 
+                loginBtn.onclick = null; // Quita el evento de logout
             }
         });
 
-        function confirmLogout(name) {
-            if(confirm(`¿Hola ${name}, quieres cerrar sesión?`)) {
-                signOut(auth).then(() => {
-                    showAlert("Sesión cerrada correctamente", "success");
-                }).catch((error) => {
-                    showAlert("Error al salir: " + error.message, "danger");
-                });
-            }
-        }
-
-        // --- PRODUCTOS ---
+        // Detector de conexión
         window.addEventListener('offline', () => document.getElementById('offline-indicator').classList.remove('d-none'));
         window.addEventListener('online', () => document.getElementById('offline-indicator').classList.add('d-none'));
 
@@ -339,7 +347,7 @@
                 localStorage.setItem('productosCache', JSON.stringify(allProducts));
                 applyFilters();
             }
-        }, (error) => console.log("Conectando...", error));
+        }, (error) => console.log("Conexión productos:", error));
 
         function applyFilters() {
             let filtered = allProducts;
@@ -371,7 +379,8 @@
         if(searchInput) {
             searchInput.addEventListener('input', (e) => {
                 currentSearchTerm = e.target.value.trim();
-                clearSearchBtn.classList.toggle('d-none', currentSearchTerm.length === 0);
+                if (currentSearchTerm.length > 0) clearSearchBtn.classList.remove('d-none');
+                else clearSearchBtn.classList.add('d-none');
                 applyFilters();
             });
         }
@@ -435,7 +444,6 @@
                 productsContainer.innerHTML += html;
             });
 
-            // Activar carruseles
             document.querySelectorAll('.card-product-style .carousel').forEach(el => {
                 const bsCar = new bootstrap.Carousel(el, { interval: 1500, pause: false });
                 el.closest('.card-product-style').addEventListener('mouseenter', () => bsCar.cycle());
@@ -528,8 +536,6 @@
             }
         };
 
-        renderCart();
-
         // --- LÓGICA DE LOGIN Y REGISTRO ---
         let isLogin = true;
         const toggle = document.getElementById('toggleAuthMode');
@@ -554,10 +560,12 @@
                     await signInWithEmailAndPassword(auth, email, pass);
                     showAlert("¡Hola de nuevo!", "success");
                 } else {
+                    // REGISTRO MEJORADO: Crea usuario Y actualiza nombre
                     const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
-                    // Actualizar nombre
                     if(nameInput.value) {
                         await updateProfile(userCredential.user, { displayName: nameInput.value });
+                        // Forzamos actualización UI
+                        document.getElementById('navUserName').textContent = nameInput.value.split(' ')[0];
                     }
                     showAlert("Cuenta creada con éxito", "success");
                 }
@@ -565,9 +573,11 @@
             } catch(err) { 
                 console.error(err);
                 if (err.code === 'auth/operation-not-allowed') {
-                    alert("ERROR DE CONFIGURACIÓN: No has activado 'Correo/Contraseña' en tu proyecto de Firebase (Fitsyle). Ve a Authentication > Sign-in method y actívalo.");
+                    alert("⚠️ ERROR: No has activado 'Correo/Contraseña' en Firebase. Ve a la consola > Authentication > Sign-in method y actívalo.");
                 } else if (err.code === 'auth/email-already-in-use') {
-                    alert("Ese correo ya está registrado.");
+                    alert("⚠️ Ese correo ya está registrado. Intenta iniciar sesión.");
+                } else if (err.code === 'auth/weak-password') {
+                    alert("⚠️ La contraseña es muy débil. Usa al menos 6 caracteres.");
                 } else {
                     alert("Error: " + err.message);
                 }
@@ -596,7 +606,7 @@
             navigator.serviceWorker.register('./sw.js').catch(err => console.log('Error SW', err));
         }
 
-        // --- CHATBOT ---
+        // --- CHATBOT CORREGIDO (MODELO STABLE + TU API KEY) ---
         document.addEventListener('DOMContentLoaded', function() {
             const sendBtn = document.getElementById('chat-send');
             const chatInput = document.getElementById('chat-input');
@@ -624,8 +634,9 @@
                 
                 const systemPrompt = `Eres "FitSyle AI". Vendedor amable. Lista de productos hoy: ${productListJSON}. Responde corto y con emojis.`;
                 
+                // TU API KEY AQUI
                 const apiKey = "AIzaSyBK5X1dROuIiq0NPhtXL7Yc6A7IVhMdO84"; 
-                // CAMBIADO A VERSIÓN ESTABLE
+                // USANDO MODELO ESTABLE (NO PREVIEW)
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
                 
                 const payload = { 
@@ -641,13 +652,19 @@
                     });
                     
                     const result = await response.json();
+                    
+                    if(result.error) {
+                        console.error("API Error detallado:", result.error);
+                        throw new Error(result.error.message);
+                    }
+
                     let aiResponse = result.candidates?.[0]?.content?.parts?.[0]?.text || "No te entendí bien, ¿puedes repetir?";
                     aiResponse = aiResponse.replace(/[*_~`]/g, ''); 
                     appendMessage(aiResponse, 'ai');
 
                 } catch (error) {
                     console.error("Fetch Error:", error);
-                    appendMessage("Mi cerebro de IA está desconectado un momento 🔌.", 'error');
+                    appendMessage("Mi cerebro de IA está desconectado un momento 🔌. (Error: " + error.message + ")", 'error');
                 }
             }
 
